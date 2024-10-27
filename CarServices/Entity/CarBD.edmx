@@ -1,0 +1,473 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище CarServiceModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="News">
+          <Key>
+            <PropertyRef Name="NameNews" />
+          </Key>
+          <Property Name="NameNews" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="News" Type="nvarchar(max)" />
+          <Property Name="Image" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WorkerID" Type="int" />
+          <Property Name="SericesID" Type="int" />
+          <Property Name="PartID" Type="int" />
+          <Property Name="TotalCost" Type="money" />
+          <Property Name="OrderDate" Type="date" />
+        </EntityType>
+        <EntityType Name="Parts">
+          <Key>
+            <PropertyRef Name="PartID" />
+          </Key>
+          <Property Name="PartID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PartName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PartNumber" Type="varchar" MaxLength="50" />
+          <Property Name="PartPrice" Type="money" />
+          <Property Name="InStock" Type="int" />
+          <Property Name="StockID" Type="int" />
+        </EntityType>
+        <EntityType Name="Reports">
+          <Key>
+            <PropertyRef Name="ReportsID" />
+          </Key>
+          <Property Name="ReportsID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReportsName" Type="varchar" MaxLength="50" />
+          <Property Name="ReportsData" Type="date" />
+          <Property Name="NumberOfOrders" Type="int" />
+          <Property Name="TotalSum" Type="money" />
+          <Property Name="OrderID" Type="int" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="Role" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Services">
+          <Key>
+            <PropertyRef Name="SericesID" />
+          </Key>
+          <Property Name="SericesID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ServiceName" Type="varchar" MaxLength="50" />
+          <Property Name="ServicePrice" Type="money" />
+          <Property Name="ServiceDescription" Type="varchar" MaxLength="400" />
+          <Property Name="ServiceIcon" Type="image" />
+        </EntityType>
+        <EntityType Name="Stock">
+          <Key>
+            <PropertyRef Name="StockID" />
+          </Key>
+          <Property Name="StockID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PartID" Type="int" />
+          <Property Name="QuantityInStock" Type="int" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserSurname" Type="varchar" MaxLength="50" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
+          <Property Name="UserPatronymic" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="RoleID" Type="int" />
+        </EntityType>
+        <Association Name="FK_Order_Parts">
+          <End Role="Parts" Type="Self.Parts" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parts">
+              <PropertyRef Name="PartID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="PartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Services">
+          <End Role="Services" Type="Self.Services" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="SericesID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="SericesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Parts_Stock">
+          <End Role="Stock" Type="Self.Stock" Multiplicity="0..1" />
+          <End Role="Parts" Type="Self.Parts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stock">
+              <PropertyRef Name="StockID" />
+            </Principal>
+            <Dependent Role="Parts">
+              <PropertyRef Name="StockID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reports_Order">
+          <End Role="Order" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="Reports" Type="Self.Reports" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="Reports">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище CarServiceModelContainer">
+          <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Parts" EntityType="Self.Parts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reports" EntityType="Self.Reports" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Services" EntityType="Self.Services" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stock" EntityType="Self.Stock" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Order_Parts" Association="Self.FK_Order_Parts">
+            <End Role="Parts" EntitySet="Parts" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Services" Association="Self.FK_Order_Services">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Parts_Stock" Association="Self.FK_Parts_Stock">
+            <End Role="Stock" EntitySet="Stock" />
+            <End Role="Parts" EntitySet="Parts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reports_Order" Association="Self.FK_Reports_Order">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="Reports" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Roles" Association="Self.FK_Users_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CarServiceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="CarServiceEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="News" EntityType="CarServiceModel.News" />
+          <EntitySet Name="Orders" EntityType="CarServiceModel.Order" />
+          <EntitySet Name="Parts" EntityType="CarServiceModel.Part" />
+          <EntitySet Name="Reports" EntityType="CarServiceModel.Report" />
+          <EntitySet Name="Roles" EntityType="CarServiceModel.Role" />
+          <EntitySet Name="Services" EntityType="CarServiceModel.Service" />
+          <EntitySet Name="Stocks" EntityType="CarServiceModel.Stock" />
+          <EntitySet Name="Users" EntityType="CarServiceModel.User" />
+          <AssociationSet Name="FK_Order_Parts" Association="CarServiceModel.FK_Order_Parts">
+            <End Role="Part" EntitySet="Parts" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Services" Association="CarServiceModel.FK_Order_Services">
+            <End Role="Service" EntitySet="Services" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reports_Order" Association="CarServiceModel.FK_Reports_Order">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Parts_Stock" Association="CarServiceModel.FK_Parts_Stock">
+            <End Role="Stock" EntitySet="Stocks" />
+            <End Role="Part" EntitySet="Parts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Roles" Association="CarServiceModel.FK_Users_Roles">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="News">
+          <Key>
+            <PropertyRef Name="NameNews" />
+          </Key>
+          <Property Name="NameNews" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="News1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WorkerID" Type="Int32" />
+          <Property Name="SericesID" Type="Int32" />
+          <Property Name="PartID" Type="Int32" />
+          <Property Name="TotalCost" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="OrderDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Part" Relationship="CarServiceModel.FK_Order_Parts" FromRole="Order" ToRole="Part" />
+          <NavigationProperty Name="Service" Relationship="CarServiceModel.FK_Order_Services" FromRole="Order" ToRole="Service" />
+          <NavigationProperty Name="Reports" Relationship="CarServiceModel.FK_Reports_Order" FromRole="Order" ToRole="Report" />
+        </EntityType>
+        <EntityType Name="Part">
+          <Key>
+            <PropertyRef Name="PartID" />
+          </Key>
+          <Property Name="PartID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PartName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PartNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PartPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="InStock" Type="Int32" />
+          <Property Name="StockID" Type="Int32" />
+          <NavigationProperty Name="Orders" Relationship="CarServiceModel.FK_Order_Parts" FromRole="Part" ToRole="Order" />
+          <NavigationProperty Name="Stock" Relationship="CarServiceModel.FK_Parts_Stock" FromRole="Part" ToRole="Stock" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="ReportsID" />
+          </Key>
+          <Property Name="ReportsID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReportsName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ReportsData" Type="DateTime" Precision="0" />
+          <Property Name="NumberOfOrders" Type="Int32" />
+          <Property Name="TotalSum" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="OrderID" Type="Int32" />
+          <NavigationProperty Name="Order" Relationship="CarServiceModel.FK_Reports_Order" FromRole="Report" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="Role1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Users" Relationship="CarServiceModel.FK_Users_Roles" FromRole="Role" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="SericesID" />
+          </Key>
+          <Property Name="SericesID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ServiceName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ServicePrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ServiceDescription" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
+          <Property Name="ServiceIcon" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Orders" Relationship="CarServiceModel.FK_Order_Services" FromRole="Service" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Stock">
+          <Key>
+            <PropertyRef Name="StockID" />
+          </Key>
+          <Property Name="StockID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PartID" Type="Int32" />
+          <Property Name="QuantityInStock" Type="Int32" />
+          <NavigationProperty Name="Parts" Relationship="CarServiceModel.FK_Parts_Stock" FromRole="Stock" ToRole="Part" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserSurname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserPatronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RoleID" Type="Int32" />
+          <NavigationProperty Name="Role" Relationship="CarServiceModel.FK_Users_Roles" FromRole="User" ToRole="Role" />
+        </EntityType>
+        <Association Name="FK_Order_Parts">
+          <End Type="CarServiceModel.Part" Role="Part" Multiplicity="0..1" />
+          <End Type="CarServiceModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Part">
+              <PropertyRef Name="PartID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="PartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Services">
+          <End Type="CarServiceModel.Service" Role="Service" Multiplicity="0..1" />
+          <End Type="CarServiceModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="SericesID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="SericesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reports_Order">
+          <End Type="CarServiceModel.Order" Role="Order" Multiplicity="0..1" />
+          <End Type="CarServiceModel.Report" Role="Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Parts_Stock">
+          <End Type="CarServiceModel.Stock" Role="Stock" Multiplicity="0..1" />
+          <End Type="CarServiceModel.Part" Role="Part" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stock">
+              <PropertyRef Name="StockID" />
+            </Principal>
+            <Dependent Role="Part">
+              <PropertyRef Name="StockID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Roles">
+          <End Type="CarServiceModel.Role" Role="Role" Multiplicity="0..1" />
+          <End Type="CarServiceModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище CarServiceModelContainer" CdmEntityContainer="CarServiceEntities">
+          <EntitySetMapping Name="News">
+            <EntityTypeMapping TypeName="CarServiceModel.News">
+              <MappingFragment StoreEntitySet="News">
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="News1" ColumnName="News" />
+                <ScalarProperty Name="NameNews" ColumnName="NameNews" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="CarServiceModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
+                <ScalarProperty Name="PartID" ColumnName="PartID" />
+                <ScalarProperty Name="SericesID" ColumnName="SericesID" />
+                <ScalarProperty Name="WorkerID" ColumnName="WorkerID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Parts">
+            <EntityTypeMapping TypeName="CarServiceModel.Part">
+              <MappingFragment StoreEntitySet="Parts">
+                <ScalarProperty Name="StockID" ColumnName="StockID" />
+                <ScalarProperty Name="InStock" ColumnName="InStock" />
+                <ScalarProperty Name="PartPrice" ColumnName="PartPrice" />
+                <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
+                <ScalarProperty Name="PartName" ColumnName="PartName" />
+                <ScalarProperty Name="PartID" ColumnName="PartID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reports">
+            <EntityTypeMapping TypeName="CarServiceModel.Report">
+              <MappingFragment StoreEntitySet="Reports">
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="TotalSum" ColumnName="TotalSum" />
+                <ScalarProperty Name="NumberOfOrders" ColumnName="NumberOfOrders" />
+                <ScalarProperty Name="ReportsData" ColumnName="ReportsData" />
+                <ScalarProperty Name="ReportsName" ColumnName="ReportsName" />
+                <ScalarProperty Name="ReportsID" ColumnName="ReportsID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="CarServiceModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="Role1" ColumnName="Role" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Services">
+            <EntityTypeMapping TypeName="CarServiceModel.Service">
+              <MappingFragment StoreEntitySet="Services">
+                <ScalarProperty Name="ServiceIcon" ColumnName="ServiceIcon" />
+                <ScalarProperty Name="ServiceDescription" ColumnName="ServiceDescription" />
+                <ScalarProperty Name="ServicePrice" ColumnName="ServicePrice" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+                <ScalarProperty Name="SericesID" ColumnName="SericesID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stocks">
+            <EntityTypeMapping TypeName="CarServiceModel.Stock">
+              <MappingFragment StoreEntitySet="Stock">
+                <ScalarProperty Name="QuantityInStock" ColumnName="QuantityInStock" />
+                <ScalarProperty Name="PartID" ColumnName="PartID" />
+                <ScalarProperty Name="StockID" ColumnName="StockID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="CarServiceModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserPatronymic" ColumnName="UserPatronymic" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserSurname" ColumnName="UserSurname" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

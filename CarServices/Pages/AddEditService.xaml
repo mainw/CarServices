@@ -1,0 +1,87 @@
+﻿<Page x:Class="CarServices.Pages.AddEditService"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CarServices.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AddEditService">
+
+    <Grid Background="Azure">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="Добавить услугу:" x:Name="NamePageBox" HorizontalAlignment="Center" FontSize="20"></TextBlock>
+        <Grid Grid.Row="1" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="2"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Border VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Padding="5">
+                <StackPanel >
+                    <Image x:Name="ImageService" 
+                       Stretch="Uniform" 
+                       Height="{Binding ElementName=StackPanelInputBlock, Path=ActualHeight}" 
+                       Width="240"/>
+
+                    <Button x:Name="LoadImageBtn" Content="Загрузить фотографию"
+                        Margin="0, 5"
+                        Padding="5"
+                        Click="LoadImageBtn_Click"
+                        >
+                        <Button.Effect>
+                            <DropShadowEffect BlurRadius="5" Direction="315" Color="Gray"/>
+                        </Button.Effect>
+                    </Button>
+                </StackPanel>
+            </Border>
+
+            <Grid Grid.Column="1" Background="Black"/>
+
+            <Border Grid.Column="2" Padding="5">
+                <StackPanel>
+                    <StackPanel x:Name="StackPanelInputBlock" 
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center">
+                        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Label Name="NameLabel" Content="Наименование услуги:" Margin="0, 0, 0, 5"></Label>
+                            <Label Name="PriceLabel" Content="Цена:" Margin="0, 5"></Label>
+                            <Label Name="DescLabel" Content="Описание: " Margin="0, 5"></Label>
+
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <TextBox x:Name="NameTBox"
+                                     Margin="0, 0, 0, 5"
+                                     Height="{Binding ElementName=NameLabel, Path=ActualHeight}" 
+                                     Width="250"
+                                     VerticalContentAlignment="Center"></TextBox>
+                            <TextBox x:Name="PriceTBox" 
+                                     Margin="0, 5"
+                                     Height="{Binding ElementName=PriceLabel, Path=ActualHeight}"
+                                     Width="250"
+                                     VerticalContentAlignment="Center"></TextBox>
+                            <TextBox x:Name="DescTBox" 
+                                     Height="311" 
+                                     Margin="0, 5"
+                                     Width="250" 
+                                     TextWrapping="Wrap"
+                                     VerticalContentAlignment="Top"></TextBox>
+                        </StackPanel>
+                    </StackPanel>
+                    <Button x:Name="SaveBtn" Content="Сохранить" 
+                            Click="SaveBtn_Click" 
+                            Width="{Binding ElementName=StackPanelInputBlock, Path=ActualWidth}"
+                            Margin="0, 5"
+                            Padding="5">
+                        <Button.Effect>
+                            <DropShadowEffect BlurRadius="5" Direction="315" Color="Gray"/>
+                        </Button.Effect>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>
